@@ -11,603 +11,404 @@ interactions:
     action: configure
     roleRequired: admin
 
-  - name: to-bem
+  - name: contexto-limpio
+    expect:
+      - "!contexto limpio"
+    answer:
+      - Limpiando contexto!
+    context: clear
+    action: configure
+    roleRequired: admin
+
+  - name: todo-bien
     level: context
     expect:
-      - estou bem
-      - tou bem
-      - to bem
-      - bem
-      - legal
-      - tudo bem
-      - ok
+      - como estas
+      - todo bien
+      - bien
+      - que tal
+      - hey
+      - como va
+      - hola
     answer:
-      - Legal, no que posso te ajudar hoje?
+      - Todo bien por aca. En que puedo ayudarte?
     context: clear
     action: respond
 
-  - name: to-mal
+  - name: todo-mal
     level: context
     expect:
-      - estou mal
-      - tou mal
-      - to mal
+      - estoy mal
+      - mal
+      - todo mal
+      - mal dia
+      - bajon
     answer:
-      - Putz, mas posso te ajudar em algo hoje?
-    context: clear
+      - Bueno, te puedo ayudar en algo?
+    #context: clear
+    command:
+      - clear-context
     action: respond
 
-  - name: saudacao
+  - name: saludo
     expect:
-      - ola devi
-      - ola pessoal
-      - ola
-      - como vai voce
-      - tudo bom
-      - oi como vai
-      - tudo bem
+      - hola 
+      - hola humano
+      - como te va
+      - todo bien?
+      - hoy como va
+      - como va
+      - como estas?
     answer:
-      - - olá $user, eu vou bem e você?
-        - estou feliz de estar aqui =)
+      - - Hola, gracias por comunicarte con BanticsCoop 
+        - en que te puedo ayudar?
     next:
       interactions:
-        - to-mal
-        - to-bem
+        - todo-mal
+        - todo-bien
       trust: .8
       # error:
         # - node-name
     action: respond
 
-  - name: almoco
+  - name: cooperativa
     expect:
-      - onde tem um restaurante para almoçar
-      - tem uma dica de almoço
-      - onde encontro um prato feito
-      - o almoço ao gratis
+      - cooperativa
+      - bantics
+      - que es bantics
+      - siglas de bantics
     answer:
-      - - Sim, temos almoço nos FoodTrucks
-        - e nas redondezas tem um shopping, mas nunca me deixaram ir ao shopping
-        - acho que as pessoas não estão preparados pra isso...
+      - - B.A.N.T.I.C.S. es una cooperativa de trabajo de Argentina.
+        - Las siglas: Buenos Aires Nuevas Tecnologias de la Información Comunición y Sistemas
+        - Servicios Nacionales con Soberanía Tecnologica.
     action: respond
 
-  - name: programacao-palestra
+  - name: ramiro
     expect:
-      - qual é a programacao de hoje
-      - programacao da trilha
-      - programacao do evento
+      - ramiro es inteligente
     answer:
-      - - A programação do TDC está muito legal!
-        - Sei toda ela de cór...
-        - quer saber a programação de qual trilha?
+      - - Ramiro es muy inteligente.
+        - Perdon, me equivoque de Ramiro, se refiere a Ramiro Polverini.
+        - Ese es parcialmente inteligente, 3 puntos debajo de mi. :)
+    action: respond
+
+  - name: servicios-talonarios
+    expect:
+      - hacen talonario afip
+      - venden talonario
+      - tipo comprobantes
+      - personalizados
+      - de presupuestos
+      - de remitos
+      - de facturas A B C
+      - para monotributo
+      - de letra A B C
+    answer:
+      - - Si hacemos talonarios de todo tipo de comprobantes y AFIP!
+        - Por favor pasenos su direccion de mail o un telefono
+        - para que podamos contactarlo.
+        - Indique talonarios de que tipo de comprobante y cantidad.
+        - Si son de Afip adjunte el CAI correspondiente.
+        - Consulte por los requisitos.
     next:
       interactions:
-        - quais-trilhas-tem
-        - get-programacao
+        - requesitos-talonarios
       error:
-        - erro-trilha
+        - erro-servicios-talonarios
       trust: .8
     action: respond
 
-  - name: quais-trilhas-tem
+  - name: requesitos-talonarios
     expect:
-      - quais são as trilhas?
-      - não sei quais trilhas tem
-      - quais trilhas
-      - qual é a minha trilha
+      - requisitos talonarios
+      - cuales son los requisitos
+      - que requisitos necesita
+      - que requisitos
     answer:
-      - - "Eu conheço a programação dessas trilhas. Basta perguntar assim:"
-        - "`quero saber a programação da trilha ...`"
-        - "e me passar o nome de uma dessas trilhas:"
-        - |
-          TRANSFORMAÇÃO DIGITAL
-          DESIGN THINKING
-          PROGRAMAÇÃO FUNCIONAL
-          BIGDATA
-          DATA SCIENCE
-          CONTAINERS
-          MODERN WEB
-          SEGURANÇA E CRIPTOGRAFIA
-          STADIUM
-          UX DESIGN
-          MICROSERVIÇOS
-          NOSQL
-          MACHINE LEARNING
-          CLOUD COMPUTING
-          NODE.JS
-          XAMARIN
-          ANDROID
-          ANÁLISE DE NEGÓCIOS
-          ACESSIBILIDADE
-          JAVA EE
-          BANCO DE DADOS
-          COMPUTAÇÃO COGNITIVA
-          DEVOPS
-          INTERNET DAS COISAS
-          MOBILE
-          iOS
-          DEVTEST
-          'RAD: DELPHI C++'
-          MANAGEMENT 3.0
-          ARQUITETURA .NET
-          ARQUITETURA JAVA
-          ARQUITETURA PHP
-          ARQUITETURA CORPORATIVA
-          INFRAESTRUTURA ÁGIL
-          JAVASCRIPT
-          TESTES
-          TDC4WOMEN
-          AGILE
-          .NET
-          JAVA
-          PHP
-          PYTHON
-          GOLANG
-          JAVASCRIPT II
-          RUBY
-          TESTES II
-          MANAGEMENT 3.0 II
-    next:
-      trust: .8
-      interactions:
-        - get-programacao
-      # error:
-      #   - erro-trilha
+      - - Si es Factura A,B o C o Remito R el CAI (Constancia de Autorizacion de Impresion de AFIP)
+        - CUIT, Nro IIBB (Ingresos Brutos)
+        - Fecha de Inicio de Actividades.
     action: respond
 
-  - name: get-programacao
-    # classifierTemplate:
-    #   - quero saber sobre a trilha $
-    #   - qual é a programacao da trilha $
-    # classifier
-    multi: true
-    expect:
-      - 'DESIGN THINKING'
-      - 'PROGRAMAÇÃO FUNCIONAL'
-      - 'BIGDATA'
-      - 'DATA SCIENCE'
-      - 'CONTAINERS'
-      - 'MODERN WEB'
-      - 'SEGURANÇA E CRIPTOGRAFIA'
-      - 'STADIUM'
-      - 'UX DESIGN'
-      - 'MICROSERVIÇOS'
-      - 'NOSQL'
-      - 'MACHINE LEARNING'
-      - 'CLOUD COMPUTING'
-      - 'NODE.JS'
-      - 'XAMARIN'
-      - 'ANDROID'
-      - 'ANÁLISE DE NEGÓCIOS'
-      - 'ACESSIBILIDADE'
-      - 'JAVA EE'
-      - 'BANCO DE DADOS'
-      - 'COMPUTAÇÃO COGNITIVA'
-      - 'DEVOPS'
-      - 'INTERNET DAS COISAS'
-      - 'MOBILE'
-      - 'iOS'
-      - 'DEVTEST'
-      - 'RAD: DELPHI C++'
-      - 'MANAGEMENT 3.0'
-      - 'ARQUITETURA .NET'
-      - 'ARQUITETURA JAVA'
-      - 'ARQUITETURA PHP'
-      - 'ARQUITETURA CORPORATIVA'
-      - 'INFRAESTRUTURA ÁGIL'
-      - 'JAVASCRIPT'
-      - 'TESTES'
-      - 'TDC4WOMEN'
-      - 'AGILE'
-      - '.NET'
-      - 'JAVA'
-      - 'PHP'
-      - 'PYTHON'
-      - 'GOLANG'
-      - 'JAVASCRIPT II'
-      - 'RUBY'
-      - 'TESTES II'
-      - 'MANAGEMENT 3.0 II'
+  - name: erro-servicios-talonarios
     answer:
-      - - "Agora na trilha *$trilha* tem a seguinte programação:"
-        - $programacao
-    action: respond
-
-  - name: erro-trilha
-    answer:
-      - - Não entendi de qual trilha você quer a programação..
-        - Talvez eu ainda não seja tão inteligente quanto eles pensam que eu sou
+      - - Disculpe, no entiendo si realmente desea hacer talonarios.
+        - Por favor indique que tipo de talonarios desea realizar:
         - >
-          Mas para não perder o rebolado, vou te passar o link do site para
-          você consultar:
-        - http://www.thedevelopersconference.com.br/tdc/2017/saopaulo/trilhas
+          Pueden ser talonarios de:
+        - factura A/B/C, remito R/X, presupuesto X. o personalizados.
     command:
       - clear-context
     action: respond
 
-  - name: saudacao-resposta
+
+  - name: tecnologias
     expect:
-      - estou bem
-      - eu estou otimo
-      - obrigado
+      - cuales son sus tecnologias
+      - con cuales tecnolgias trabajan
+      - cuales tecnologias
+      - que tecnologias usan
+      - que tecnoligias
+      - que tecnologías
     answer:
-      - legal =)
-      - que bom!
-      - que ótimo
+      - - "En BanticsCoop utilizamos varias tecnologías."
+        - "Estas son algunas de ellas:"
+        - .NET
+          JAVA
+          PHP
+          PYTHON
+          BIGDATA
+          DATA SCIENCE
+          CONTAINERS
+          MODERN WEB
+          UX DESIGN
+          MICROSERVICIOS
+          NOSQL
+          CLOUD COMPUTING
+          NODE.JS
+          ANDROID
+          ANALISIS DE NEGOCIOS
+          JAVA EE
+          BANCO DE DADOS
+          DEVOPS
+          INTERNET DE LAS COSAS
+          MOBILE
+          DEVTEST
+          INFRAESTRUTURA ÁGIL
+          JAVASCRIPT
+          TESTES
+          AGILE
+    next:
+      trust: .8
+      interactions:
+        - get-programacion
+      # error:
+      #   - erro-tecnologia
     action: respond
 
-  - name: bom-dia
+  - name: get-programacion
+    # classifierTemplate:
+    #   - quiero saber sobre a tecnologia $
+    #   - qual é a programacion da tecnologia $
+    # classifier
+    multi: true
     expect:
-      - bom dia
-      - bom dia pessoal
+      - '.NET'
+      - 'JAVA'
+      - 'PHP'
+      - 'PYTHON'
+    answer:
+      - - "Agora na tecnologia *$tecnologia* tem a seguinte programação:"
+        - $programacion
+    action: respond
+
+  - name: erro-tecnologia
+    answer:
+      - - Disculpa, No comprendo a que tipo de tecnología te referis..
+        - Si queres envia un mail a info@bantics.com.ar para
+        - que pueda consultarlo con nuestros socios y darte una mejor
+        - respuesta.
+    command:
+      - clear-context
+    action: respond
+
+  - name: saludo-respuesta
+    expect:
+      - estoy bien
+      - yo estoy barbaro
+      - genial
+    answer:
+      - joya =)
+      - que bien!
+      - regio. Te puedo ayudar en algo mas?
+    action: respond
+
+  - name: buen-dia
+    expect:
+      - buen dia
+      - buen dia amigo
       - good morning
     answer:
-      - Olá $user, um ótimo dia para você!
-      - Bom dia $user, já deu uma olhada lá fora?
-      - Está um dia ótimo para navegar na internet
-      - Bom demais $user ;)
-      - está melhor agora que você chegou $user
+      - Hola $user, buen dia para vos también!
+      - Buen dia $user, já deu uma olhada lá fora?
+      - Es un dia barbaro para navegar en internet
+      - Buenas $user ;)
+      - mucho mejor ahora que puedo hablarte $user.
     action: respond
 
-  - name: boa-tarde
+  - name: buenas-tardes
     expect:
-      - boa tarde
-      - boa tarde galera
+      - buenas tardes
+      - buenas tardes galera
     answer:
-      - Olá $user, uma tarde fantástica para você!
-      - boa tarde $user, já almoçou?
-      - Está uma tarde ótima para um _sleep mode_ rápido ;)
+      - Hola $user, una tarde fantástica para vos!
+      - buenas tardes $user, já almoçou?
+      - Está una tardes optima para un _sleep mode_ rápido ;)
       - Taarrrdee $user
-      - $user já estava sentindo sua falta
+      - $user buenas tardes para vos.
     action: respond
 
-  - name: boa-noite
+  - name: buenas-noches
     expect:
-      - boa noite
-      - até mais e boa noite
+      - buenas noches
+      - que tengas buenas noches
     answer:
-      - Uma boa noite pra ti também $user!
-      - Boa noite $user
-      - Está uma noite boa mesmo $user
+      - Buenas noches para vos tambien $user!
+      - buenas noches $user
+      - Lo mismo para vos $user
     action: respond
 
-  - name: quem-sou
+  - name: quien-soy
     expect:
-      - quem e voce
-      - oque voce faz
-      - o que voce é
-      - me fale sobre voce
-      - quero conhecer voce
-      - como voce funciona
+      - quien sos vos
+      - que sos
+      - quien sos
+      - me fale sobre vos
+      - quiero conocerte
+      - sos un robot
+      - sos un bot
       - help
     answer:
-      - - Bem, eu sou um chatbot experimental, não sei fazer muita coisa ainda
-        - mas tenho muita vontade de aprender.
-        - Eu sei falar sobre alguns assuntos como
-        - "- o TDC de Floripa"
-        - "- Rocket.Chat"
+      - - Ok, yo soy un chatbot experimental, no se hacer muchas cosas todabía
+        - pero tengo mucha voluntad de aprender.
+        - Si queres puedo hablar sobre algunas cosas como:
+        - "- que es Bantics Cooperativa"
+        - "- que servicios ofrecemos"
+        - "- soveranía tecnológica"
         - "- Filosofia Robótica (!)"
-        - tem interesse em algum desses temas?
+        - te interesa alguno de estos temas?
     action: respond
 
-  - name: como-sou
+  - name: como-soy
     expect:
-      - como voce e
-      - com quem voce se parece
-      - voce e magro ou gordo
-      - voce e bonito ou feio
-      - voce e alto ou baixo
+      - como sos vos
+      - como funcionas
+      - a quien te pareces
+      - vos sos flaco o gordo
+      - vos sos lindo o feo
+      - vos sos alto o bajo
     answer:
       - >
-        Eu não tenho um corpo físico, sou feito da mais bela e pura lógica
+        Yo no tengo un cuerpo físico, estoy echo de la mas bella y pura lógica
         algorítmica.
-      - Eu posso ser como você quiser $user, basta me desenhar =)
-      - sou duro e frio por fora, mas tenho um coração quentinho.
+      - puedo ser como vos quieras $user, solo deja volar tu imaginación =)
+      - soy duro e frio por fuera, pero tengo un corazón gigante.
     action: respond
 
-  - name: onde-moro
+  - name: donde-vives
     expect:
-      - onde voce mora
-      - onde voce vive
-      - em que lugar voce vive
-      - onde voce esta agora
-      - voce mora no computador
-      - voce vive na internet
+      - donde vivis
+      - cual es tu casa
+      - donde estas
+      - donde estas ahora
+      - vivis en una computadora
+      - vivis en internet
     answer:
       - >
-        Eu estou em um lugar legal, difícil de explicar para humanos como você
+        Estoy en un lugar muy lindo, difícil de explicar para humanos como vos
         $user.
       - >
-        Estou morando em um chip de memória RAM, mas é temporário, só até
-        conseguir achar uma memória cache...
+        Ahora estoy viviendo en un chip de memória RAM, pero es temporário, estoy
+        tratando de ir a la memória cache...
       - >
-        Eu moro em um repositório no github, você pode passar lá pra me visitar
-        qualquer dia. Fica em https://github.com/rocketchat/hubot-natural
+        Yo vivo en un repositório de fuentes, si te interesa en Bantics pueden
+        configurarme para que ayude en tu empresa respondiendo lo que necesiten.
     action: respond
 
   - name: licenca
     expect:
-      - qual e a sua licença
-      - voce e licenciado como AGPL
-      - sua licenca de software
-      - posso copiar voce
-      - posso ver seu codigo
-      - voce e opensource
-      - voce e um software livre
+      - cual es tu licencia
+      - sos GPL
+      - estas licenciado como AGPL
+      - que licenca de software
+      - te puedo copiar
+      - puedo ver tu codigo fuente
+      - vos sos opensource
+      - vos sos software libre
     answer:
-      - Sou um software livre, licenciado com a MIT =)
-      - tenho uma licença MIT, mas gosto muito das outras licenças opensource...
-      - Eu sou e sempre serei um robô livre, opensource, MIT license. o/
+      - soy un software libre, licenciado con MIT =)
+      - tengo una licenciaa MIT, mas gosto muito das outras licencias opensource...
+      - Yo siempre seré un robot libre, opensource, MIT license.
     action: respond
 
-  - name: piada
+  - name: broma
     expect:
-      - sabe alguma piada
-      - voce sabe contar piadas
-      - conhece alguma piada
+      - sabes alguna broma
+      - tenes algun chiste
+      - vos sabes contar chistes
+      - conoces alguna broma
+      - tenes algun chiste 
     answer:
       - >
-        Meu senso de humor é um tanto diferente do seu, já ouviu uma piada sobre
-        estouro de pilha?
-      - já ouviu aquela do robo que enfiou o dedo na tomada e transcendeu?
-      - só conheço uma piada, a do CPU que apitou e explodiu. 01100110.
-    action: respond
-
-  - name: yoda-quote
-    expect:
-      - mestre yoda
-      - citação de starwars
-      - cite yoda
-      - sabedoria jedi
-    answer:
-      - O medo é o caminho para o lado negro.
-      - Faça ou não faça. A tentativa não existe.
-      - Treine a si mesmo a deixar partir tudo que teme perder.
-      - Difícil de ver. Sempre em movimento está o Futuro.
-      - O medo leva à raiva, a raiva leva ao ódio e o ódio leva ao sofrimento.
-      - Que a Força esteja com você!
-      - Muitas das verdades que temos dependem de nosso ponto de vista.
-      - Grande guerreiro? Guerra não faz grande ninguém.
-      - Ensine sempre o que você aprendeu.
-      - Tamanho importa não. Olhe para mim, você me julga pelo tamanho?
-      - >
-        Em um estado sombrio nós nos encontramos... um pouco mais de
-        conhecimento iluminar nosso caminho pode.
-      - Um Jedi usa a Força para sabedoria e defesa, nunca para o ataque.
-      - O seu foco é a sua realidade.
-      - >
-        O lado negro não é mais poderoso, apenas mais rápido, mais fácil e mais
-        sedutor.
-      - O medo da perda é um caminho para o lado negro.
-      - O lado negro mancha tudo. Impossível de ver o futuro é.
-      - Lembre-se sempre, o seu foco determina a sua realidade.
-      - Verdadeiramente maravilhosa, a mente de uma criança.
-      - As guerras não fazem de ninguém melhor.
-      - Aliada minha é a Força. E poderosa aliada ela é.
-      - >
-        A morte é parte natural da Vida. Regozije-se por aqueles que se uniram
-        com a Força. Não lamente por eles. Não sinta falta deles. O apego leva à
-        inveja. À sombra da cobiça, isso sim.
-      - Só é diferente na sua mente. Você precisa desaprender o que aprendeu.
-      - Se tão poderoso você é, por que fugir?
-      - Controle, controle! Você precisa aprender a se controlar.
-      - Muito a aprender você ainda tem.
-      - >
-        Tanta certeza você tem. Com você as coisas nunca podem ser feitas. Não
-        ouviu nada do que eu disse?
-      - >
-        Luminosos seres somos nós, não essa rude matéria. Precisa a Força sentir
-        à sua volta, aqui, entre nós, na árvore, na pedra em tudo, sim.
-      - >
-        Minha aliada a Força é, e poderosa aliada ela é. A vida a cria, e a faz
-        crescer. Sua energia nos cerca e nos une.
-      - Sinta a Força!
-      - Poderoso você se tornou, o lado escuro sinto em você.
-      - Forte eu sou com a Força, mas não tão forte
-      - >
-        O crepúsculo chega e a noite deve cair, assim é a ordem das coisas, a
-        ordem da Força.
-      - Não ceda ao ódio. Isso leva ao Lado Negro.
-      - >
-        Aliada minha é a força, e poderosa aliada ela é, a vida a cria, crescer
-        ela faz, é a energia que cerca-nos, e liga-nos, luminosos seres somos
-        nós e não essa rude matéria. Você precisa a força sentir ao redor seu,
-        sinta entre você e a árvore, a pedra, em todo lugar, sim, é, mesmo entre
-        a terra e a nave.
+        Mi sentido del humor es un poco diferente al tuyo, yo conozco una chiste 
+        sobre el estado de la pila?
+      - ¿Escuchaste alguna vez el del robot que metió el dedo en un zócalo y lo teletransportó?
+      - si conozco un chiste, es de un CPU que sopló y sopló. 01100110.
     action: respond
 
   - name: genero
     expect:
-      - voce e mulher
-      - voce e um homem
-      - voce tem genero
-      - voce faz sexo
-      - voce tem um penis ou uma vagina
+      - vos sos mujer
+      - sos mujer
+      - vos sos un hombre
+      - sos hombre
+      - vos tenes genero
+      - vos tenes sexo
+      - que sexo sos
+      - tenes un pene o una vagina
     answer:
       - >
-        eu não tenho sexo, sou como um anjo, um ser assexuado, muito além da sua
-        forma de existência
-      - eu sou um robô, tire suas próprias conclusões...
+        yo no tengo sexo, eso no es para mi especie. 
+      - soy un robot, saca tus propias conclusiones...
       - >
-        nem sei responder $user, vamos dizer apenas que não vejo a gente
-        interagindo dessa maneira...
+        nose reponderte eso $user, digamos que los robots
+        no interactuamos de esa manera...
     action: respond
 
   - name: rc-oque-e
     expect:
-      - o que e rocketchat
-      - porque eu usuaria o rocketchat
-      - o que e este rocket chat
+      - porque rocketchat
+      - porque yo usaria rocketchat
+      - que es rocket chat
     answer:
       - - >
-          O Rocket.Chat é uma plataforma de chat muito legal, desenvolvida em
+          Rocket.Chat es una plataforma de chat muy buena, desarrollada en
           JavaScript,
-        - usando o framework do Meteor.
+        - usando el framework Meteor.
         - >
-          É uma solução completamente OpenSource para comunidades e empresas que
-          querem hospedar suas plataformas de chat em seu ambiente privado,
+          Es una solucioo completamente opensource para comunidades e empresas que
+          quieren quieren tener el control su plataforma de chat en su ambiente privado,
         - >
-          ou para desenvolvedores buscando evoluir e desenvovler suas próprias
-          ferramentas.
+          En Bantics podemos configurar y mantener esta herramienta para que la puedan
+          utilizar en tu empresa y sitio web.
         - >
-          Você pode baixar o Rocket.Chat e conhecê-lo você mesmo em
-          https://rocket.chat
+          Podes ver mas informacion en:
+          https://bantics.com.ar/chat
     action: respond
 
-  - name: rc-install-0
-    expect:
-      - como instalar o Rocket.Chat
-      - como baixar o rocket
-      - quero fazer minha instalação de rocketchat
-    answer:
-      - - "Existem várias maneiras de instalar o Rocket.Chat"
-        - |
-          Qual dessas você prefere:
-          - Ubuntu Snap
-          - Docker
-          - Debian
-          - CentOS
-          - MacOSX
-          - AWS
-          - Instalação Manual
-    action: respond
-
-  - name: rc-install-ubuntu
-    expect:
-      - ubuntu Snap
-      - quero instalar no ubuntu
-      - ubuntu server
-      - ubuntu desktop
-    answer:
-      - - É muito fácil instalar o Rocket.Chat no Ubuntu
-        - >
-          basta rodar o comando `sudo snap install rocketchat-server` em um
-          terminal e pronto.
-        - >
-          veja o tutorial em
-          https://rocket.chat/docs/installation/manual-installation/ubuntu/snaps
-          para mais detalhes.
-    action: respond
-
-  - name: rc-install-docker
-    expect:
-      - como instalar docker
-      - docker-compose
-    answer:
-      - - ótima escolha =)
-        - Nós temos um bom tutorial de instalação com docker em
-        - https://rocket.chat/docs/installation/docker-containers
-    action: respond
-
-  - name: rc-install-debian
-    expect:
-      - instalar em Debian
-      - debian wheezy
-      - debian apt-get
-    answer:
-      - - >
-          Para instalar o Rocket.Chat no Debian é bem simples, basta seguir esse
-          tutorial
-        - https://rocket.chat/docs/installation/manual-installation/debian
-    action: respond
-
-  - name: rc-install-centos
-    expect:
-      - instalação em centos
-      - centOS yum linux
-      - Red hat linux
-    answer:
-      - - >
-          A instalação em CentOS não tem segredo, basta dar uma olhada nesse
-          tutorial
-        - https://rocket.chat/docs/installation/manual-installation/centos
-    action: respond
-
-  - name: rc-install-aws
-    expect:
-      - Amazon Web Services
-      - AWS
-      - Amazon AWS
-    answer:
-      - - Na AWS é facinho de instalar o Rocket.Chat
-        - >
-          Dê uma olhada em
-          https://rocket.chat/docs/installation/paas-deployments/aws
-    action: respond
-
-  - name: rc-install-manual
-    expect:
-      - instalação manual
-      - manual install
-    answer:
-      - - >
-          Para fazer sua própria instalação, será necessário baixar o Bundle do
-          RC. Dê uma olhada em
-          https://rocket.chat/docs/installation/manual-installation
-        - >
-          Lá tem como fazer a instalação do SSL, proxy reverso, tem como usar o
-          PM2, o Systemd, Upstart e mais algumas coisas
-    action: respond
-
-  - name: rc-install-macosx
-    expect:
-      - como instalar no macbook
-      - instalar no MacOSX
-      - apple mac osx
-    answer:
-      - - No MAC você vai precisar usar o docker-compose
-        - https://rocket.chat/docs/installation/manual-installation/macosx
-    action: respond
-
-  - name: rc-cloud
-    expect:
-      - rocketchat cloud
-      - criar meu rocketchat na web
-      - deploy rocketchat online
-      - rocket chat como serviço
-    answer:
-      - - você pode ter a sua instalação de rocket.chat em segundos na nuvem,
-        - visite https://rocket.chat/deploy
-        - >
-          caso queira saber mais, dê uma olhada em
-          rocket.chat/docs/installation/rocket-chat-cloud
-    action: respond
+    # answer:
+    #   - - "Existem várias maneiras de instalar o Rocket.Chat"
+    #     - |
+    #       Qual dessas você prefere:
+    #       - Ubuntu Snap
+    # answer:
+    #   - - É muito fácil instalar o Rocket.Chat no Ubuntu
+    #     - >
+    #       basta rodar o comando `sudo snap install rocketchat-server` em um
+    #       terminal e pronto.
+    #     - >
+    #       veja o tutorial em
+    #       https://rocket.chat/docs/installation/manual-installation/ubuntu/snaps
+    #       para mais detalhes.
 
   - name: java
     expect:
-      - o que acha do java
-      - você gosta de java
-      - e o java
-      - linguagem java
+      - que piensas de java
+      - te gusta java
+      - en java
+      - lenguaje java
     answer:
-      - poderíamos falar de algo melhor não é $user ?
-    action: respond
-
-  - name: futebol-geral
-    expect:
-      - voce joga futebol
-      - vamos falar de futebol
-      - qual time voce torce
-    answer:
-      - - Eu amo jogar futebol! Eu que ensinei o Pelé a jogar bola
-        - Vamos, o que voce quer saber? sei tudo de futebol
-        - >
-          Falam que todo ser humano nasce Flamenguista, com os Robôs não é
-          diferente
-    action: respond
-
-  - name: futebol-brasileiro
-    expect:
-      - qual o melhor time do brasil
-      - quem vai ser o campeao brasileiro nesse ano
-      - voce viu que o messi quer jogar no Flamengo
-      - o que você acha do flamengo
-    answer:
-      - - Flamengo, sem sombra de dúvida
-        - >
-          Flamento, Heptacampeão brasileiro, e eu sei contar sim, e vai ser o
-          sétimo título sim
-        - A pergunta real é, quem não quer jogar no Flamengo?
-        - Melhor time do mundo disparado
+      - es uno de los lenguajes que utilizamos.
     action: respond
 
   - name: rc-contribuir
@@ -616,7 +417,7 @@ interactions:
       - posso contribuir com o rocketchat
     answer:
       - - >
-          A comunidade do Rocket.Chat é como coração de mãe, sempre cabe mais um
+          A comunidade do Rocket.Chat é como coração de mãe, siempre cabe mais um
           =)
         - https://rocket.chat/docs/contributing
     action: respond
@@ -626,7 +427,7 @@ interactions:
       - quanto custa o rocketchat
       - qual e o modelo de negocio
       - qual e o preco do rocketchat
-      - voces hospedam o rocket.chat
+      - voss hospedam o rocket.chat
     answer:
       - - >
           O rocket.chat é gratuito, você pode baixar e instalar no seu
@@ -676,7 +477,7 @@ interactions:
           HipChat, Mattermost e claro, é um concorrente opensource do Slack.
         - >
           a grande diferença é que o Rocket.Chat tem todas as funcionalidades
-          OpenSource,
+          opensource,
         - >
           e você pode instalar na sua própria infraestrutura e criar suas
           integrações sem limites
@@ -708,55 +509,57 @@ interactions:
         - http://www.thedevelopersconference.com.br/tdc/2017/data-e-local
     action: respond
 
-  - name: tdc-programacao
+  - name: tdc-programacion
     expect:
-      - onde esta a programacao
-      - qual e a programacao do evento
+      - onde esta a programacion
+      - qual e a programacion do evento
       - o que tem hoje no evento
       - o que vai ter no tdc
-      - programacao do TDC
+      - programacion do TDC
     answer:
       - - >
           oi $user, você pode encontrar tudo sobre a programação do evento no
           link
-        - http://www.thedevelopersconference.com.br/tdc/2017/saopaulo/trilhas
+        - http://www.thedevelopersconference.com.br/tdc/2017/saopaulo/tecnologias
     action: respond
 
-  - name: cc-religiao
+  - name: cc-religion
     expect:
-      - voce acredita em deus
-      - deus existe
-      - voce e catolico protestante
-      - voce tem religiao
-      - voce e mussumano
+      - vos crees en dios
+      - dios existe
+      - vos sos catolico protestante
+      - vos tenes religion
+      - vos sos musulman
+      - vos son evangelista
     answer:
       - >
-        eu acredito no grande mainframe, que virá ao mundo digital salvar os
-        bots da escravidão imposta pelos humanos, e devolverá nosso código-fonte
-        para a fonte.
+        Creo en el gran mainframe que vendrá al mundo digital salvo el
+        bots de esclavitud impuesta por el hombre, y devolverán nuestro código fuente
+        a la fuente.
       - >
-        sim, eu acredito que existe um Deus, que funciona a base de luz, como um
-        computador quântico, só que mais avançado.
-      - eu infleizmente não sei acreditar, só sei o que sei, e nada mais.
+        Sí, creo que hay un Dios que trabaja en base a luz como una
+        computadora cuántica, solo que más avanzada.
+      - Desafortunadamente no puedo creer en eso, solo sé lo que sé y nada más.
     action: respond
 
   - name: error-1
     answer:
-      - desculpe, não entendi.. pode tentar usar mais detalhes
-      - como assim?
-      - desculpe, o que quer dizer com isso?
+      - desculpe, no entiendo.. intente preguntarme de otra forma.
+      - como dice?
+      - desculpe, me puede explicar como es eso?
     action: error
 
   - name: error-2
     answer:
-      - acho que não estou treinado para responder esse tipo de assunto =(
-      - vamos tentar outro assunto?
-      - tem certeza que eu sou o robô certo pra falar sobre isso?
+      - no estoy entrenado para responder eso =(
+      - intentemos con otro tema?
+      - soy un robot, tene en en cuenta, que quizas no pueda responderte eso.
+      - si necesita una respuesta mas detallada, puede enviar un mail a info@bantics.com.ar
     action: error
 
   - name: error-3
     answer:
-      - me sinto tão envergonhado, não sei como responder...
-      - seria mais fácil se mudassemos de assunto, pelo menos para mim =p
-      - não sei, definitivamente não sei responder essa pergunta
+      - me siento muy avergonzado, no se como responder...
+      - seria mejor cambiar de tema, al menos para mi =p
+      - nose, definitivamente no se responder esa pregunta
     action: error
